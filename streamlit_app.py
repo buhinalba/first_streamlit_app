@@ -43,8 +43,12 @@ streamlit.dataframe(fruityvice_normalized)
 # snowflake data
 my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
 my_cur = my_cnx.cursor()
-my_cur.execute("SELECT CURRENT_USER(), CURRENT_ACCOUNT(), CURRENT_REGION()")
-my_data_row = my_cur.fetchone()
-streamlit.text("Hello from Snowflake:")
-streamlit.text(my_data_row)
+my_cur.execute("SELECT * from C_RIVERY_DB.PUBLIC.FRUIT_LOAD_LIST")
+my_data_row = my_cur.fetchall()
+streamlit.text("Some fruits:")
+streamlit.dataframe(my_data_row)
+
+# add input box to be able to extend list
+fruit_to_add = streamlit.text_input('What kind of fruit would you like to add?')
+my_data_row.add(fruit_to_add)
 
